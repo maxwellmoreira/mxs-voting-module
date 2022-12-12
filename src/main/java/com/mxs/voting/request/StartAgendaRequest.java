@@ -6,6 +6,6 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class StartAgendaRequest {
-    @NotBlank(message = "Code is mandatory")
-    private String code;
+    @NotBlank(message = "Agenda is mandatory")
+    private String agendaCode;
 }

@@ -1,6 +1,6 @@
 package com.mxs.voting.model;
 
-import com.mxs.voting.type.StatusType;
+import com.mxs.voting.type.AgendaStatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgendaModel extends AuditModel {
-
-    @Column(name = "title", nullable = false, length = 60)
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
     @Column(name = "duration", nullable = false)
     private long duration;
@@ -27,27 +26,33 @@ public class AgendaModel extends AuditModel {
     private LocalDateTime started;
     @Column(name = "ended")
     private LocalDateTime ended;
-    @Column(name = "status", nullable = false, length = 1)
-    private String status;
+    @Column(name = "total_amount_votes")
+    private int totalAmountVotes;
+    @Column(name = "winner")
+    private String winner;
+    @Column(name = "status_agenda", nullable = false, length = 1)
+    private String statusAgenda;
     @Transient
-    private StatusType statusType;
+    private AgendaStatusType agendaStatusType;
 
     @PrePersist
-    public void fillStatus() {
-        if (statusType != null) {
-            status = statusType.getCode();
+    public void fillStatusAgenda() {
+        if (agendaStatusType != null) {
+            statusAgenda = agendaStatusType.getCode();
+        } else {
+            statusAgenda = AgendaStatusType.CREATED.getCode();
         }
     }
 
     @PostLoad
-    public void fillStatusType() {
-        if (!status.isBlank()) {
-            statusType = StatusType.of(status);
+    public void fillStatusAgendaType() {
+        if (!statusAgenda.isBlank()) {
+            agendaStatusType = AgendaStatusType.of(statusAgenda);
         }
     }
 
-    public void setStatusType(StatusType statusType) {
-        this.statusType = statusType;
-        status = statusType.getCode();
+    public void setAgendaStatusType(AgendaStatusType agendaStatusType) {
+        this.agendaStatusType = agendaStatusType;
+        statusAgenda = agendaStatusType.getCode();
     }
 }

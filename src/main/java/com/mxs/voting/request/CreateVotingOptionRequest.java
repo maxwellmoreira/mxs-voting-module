@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class VoteRequest {
+public class CreateVotingOptionRequest {
+    @NotBlank(message = "Description is mandatory")
+    private String description;
     @NotBlank(message = "Agenda is mandatory")
     private String agendaCode;
-    @NotBlank(message = "Voting option is mandatory")
-    private String votingOptionCode;
 }

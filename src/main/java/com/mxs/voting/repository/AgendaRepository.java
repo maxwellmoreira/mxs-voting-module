@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AgendaRepository extends JpaRepository<AgendaModel, Long> {
-    Optional<AgendaModel> findByCodeEquals(String code);
+    Optional<AgendaModel> findByCodeAndStatusAgendaEquals(String code, String statusAgenda);
 }

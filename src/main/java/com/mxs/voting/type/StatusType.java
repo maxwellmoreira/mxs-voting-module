@@ -8,9 +8,8 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum StatusType {
-    CREATED("C"),
-    VOTING("V"),
-    FINISHED("F");
+    ACTIVE("A"),
+    INACTIVE("I");
 
     private String code;
 

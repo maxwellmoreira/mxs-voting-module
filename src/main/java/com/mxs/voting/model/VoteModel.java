@@ -1,6 +1,5 @@
 package com.mxs.voting.model;
 
-import com.mxs.voting.type.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,30 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteModel extends AuditModel {
-    @Column(name = "vote", nullable = false, updatable = false, length = 1)
-    private String vote;
-    @Transient
-    private VoteType voteType;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agenda_code", nullable = false, updatable = false)
+    @JoinColumn(name = "agenda_id", nullable = false, updatable = false)
     private AgendaModel agendaModel;
-
-    @PrePersist
-    public void fillStatus() {
-        if (voteType != null) {
-            vote = voteType.getCode();
-        }
-    }
-
-    @PostLoad
-    public void fillStatusType() {
-        if (!vote.isBlank()) {
-            voteType = VoteType.of(vote);
-        }
-    }
-
-    public void setVoteType(VoteType voteType) {
-        this.voteType = voteType;
-        vote = voteType.getCode();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "voting_option_id", nullable = false, updatable = false)
+    private VotingOptionModel votingOptionModel;
 }

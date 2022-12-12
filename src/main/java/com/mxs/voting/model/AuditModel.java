@@ -1,5 +1,6 @@
 package com.mxs.voting.model;
 
+import com.mxs.voting.type.StatusType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,12 +27,34 @@ public class AuditModel {
     @Column(name = "last_modified_date", nullable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+    @Column(name = "status", nullable = false, length = 1)
+    private String status;
+    @Transient
+    private StatusType statusType;
 
     @PrePersist
-    void fillCode() {
+    public void fillStatus() {
         if (code == null) {
             UUID uuid = UUID.randomUUID();
             code = uuid.toString();
         }
+
+        if (statusType == null) {
+            status = StatusType.ACTIVE.getCode();
+        } else {
+            status = statusType.getCode();
+        }
+    }
+
+    @PostLoad
+    public void fillStatusType() {
+        if (!status.isBlank()) {
+            statusType = StatusType.of(status);
+        }
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+        status = statusType.getCode();
     }
 }

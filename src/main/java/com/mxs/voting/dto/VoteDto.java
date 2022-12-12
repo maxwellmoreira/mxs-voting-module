@@ -1,6 +1,5 @@
 package com.mxs.voting.dto;
 
-import com.mxs.voting.type.VoteType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteDto implements Serializable {
-    private static final long serialVersionUID = 5166447783808250649L;
-    private String voteCode;
+    private static final long serialVersionUID = -2069186850042599082L;
     private String agendaCode;
-    private VoteType voteType;
+    private String voteCode;
+    private String votingOptionCode;
 }

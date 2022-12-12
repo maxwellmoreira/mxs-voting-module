@@ -5,6 +5,12 @@ import com.mxs.voting.request.StartAgendaRequest;
 import com.mxs.voting.response.RegisterAgendaResponse;
 import com.mxs.voting.response.StartAgendaResponse;
 import com.mxs.voting.service.AgendaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,7 @@ import static com.mxs.voting.constant.UriConstant.AGENDA;
 
 @Controller
 @RequestMapping(value = AGENDA)
+@Tag(name = "Agenda Controller", description = "Controller responsible for operations related to the agenda")
 public class AgendaController {
 
     private static final Logger logger = LoggerFactory.getLogger(AgendaController.class);
@@ -29,6 +36,11 @@ public class AgendaController {
     @Autowired
     private AgendaService agendaService;
 
+    @Operation(summary = "Create an agenda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Agenda registered successfully",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RegisterAgendaResponse.class))})})
     @PostMapping
     public ResponseEntity<RegisterAgendaResponse> registerAgenda(@Valid @RequestBody RegisterAgendaRequest registerAgendaRequest) {
         logger.info("AgendaController.registerAgenda -> registerAgendaRequest: {}", registerAgendaRequest);
@@ -37,6 +49,11 @@ public class AgendaController {
         return new ResponseEntity<>(registerAgendaResponse, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Start an agenda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Agenda started and ended successfully",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = StartAgendaResponse.class))})})
     @PutMapping
     public ResponseEntity<StartAgendaResponse> startAgenda(@Valid @RequestBody StartAgendaRequest startAgendaRequest) {
         logger.info("AgendaController.startAgenda -> startAgendaRequest: {}", startAgendaRequest);

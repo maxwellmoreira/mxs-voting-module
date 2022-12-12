@@ -4,7 +4,7 @@ This is a project developed in the Java language with the purpose of providing a
 
 ## Overview
 
-![mxs-voting-module](https://user-images.githubusercontent.com/1280690/206951232-465592af-2533-48c7-8c99-b818ac47b3ec.jpg)
+![uc_overview](https://user-images.githubusercontent.com/1280690/207084599-94c26511-18ba-47cf-9941-993309c42eae.jpg)
 
 ## Services
 

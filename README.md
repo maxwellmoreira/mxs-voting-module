@@ -1,6 +1,6 @@
 # Voting Module
 
-This is a project developed in the Java language with the purpose of providing a personalized voting service.
+This is a project developed in the Java language with the objective of providing a customized voting service.
 
 ## Overview
 
@@ -15,6 +15,10 @@ This is a project developed in the Java language with the purpose of providing a
 | Start voting agenda | [PUT]   /agenda |
 | Vote Agenda | [POST]  /vote |
 | Count votes and define a winner | [GET]   /vote/vote-counting |
+
+>This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
+
+>The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
 
 #### Create agenda
 

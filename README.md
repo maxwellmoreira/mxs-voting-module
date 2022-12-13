@@ -34,5 +34,7 @@ The id, code, created_date, last_modified_date and status columns are filled in 
 
 The duration column has a range of values between 1 and 480 minutes.
 
+The status_agenda column has the following value options:
+
 
 

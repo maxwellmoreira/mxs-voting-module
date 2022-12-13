@@ -30,5 +30,9 @@ Below are the definitions of the agenda table.
 
 ![tb_agenda](https://user-images.githubusercontent.com/1280690/207092702-b42608cd-40bd-4e22-bfc2-0e0a8e86c43c.png)
 
+The id, code, created_date, last_modified_date and status columns are filled in automatically.
+
+The duration column has a range of values between 1 and 480 minutes.
+
 
 

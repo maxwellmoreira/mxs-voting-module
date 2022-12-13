@@ -20,6 +20,8 @@ This is a project developed in the Java language with the objective of providing
 
 >The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
 
+![swagger](https://user-images.githubusercontent.com/1280690/207200385-aa7324c1-8c12-4a89-9160-31e74a39306f.png)
+
 #### Create agenda
 
 This operation saves the data in the agenda table.

@@ -4,7 +4,7 @@ This is a project developed in the Java language with the objective of providing
 
 ## Overview
 
-![uc_overview](https://user-images.githubusercontent.com/1280690/207209471-36fd52b0-7efc-438f-9dcf-d18e4cc790af.png)
+![uc_overview](https://user-images.githubusercontent.com/1280690/207211006-78573770-55a0-466f-9e99-c1e80ddf75d2.png)
 
 ## Services
 

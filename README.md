@@ -59,7 +59,7 @@ The table below describes which columns are changed during the process of regist
 The status_agenda column controls the voting flow. Its possible values are:
 
 - CREATED("C") - Represents a registered agenda, but the voting period has not yet started.
-- VOTING("V") - The voting period for a registered agenda has started.
+- VOTING("V") - The voting period for an agenda has started.
 - FINISHED("F") - The voting period for an agenda has ended.
 - INTERRUPTED("I") - A agenda that was started is interrupted.
 

@@ -56,6 +56,13 @@ The table below describes which columns are changed during the process of regist
 | last_modified_date | Audit |
 | status | Audit |
 
+The status_agenda column controls the voting flow. Its possible values are:
+
+- CREATED("C") - Represents a registered agenda, but the voting period has not yet started.
+- VOTING("V") - The voting period for a registered agenda has started.
+- FINISHED("F") - The voting period for an agenda has ended.
+- INTERRUPTED("I") - A agenda that was started is interrupted.
+
 >This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
 
 >The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs

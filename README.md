@@ -52,15 +52,15 @@ The table below describes which columns are changed during the process of regist
 
 | Column | Function |
 | ------ | ------ |
-| id | audit |
+| id | Audit |
 | code | Used to identify a agenda |
 | title | Agenda title |
 | description | Detailed description of the agenda |
 | duration | Voting duration. Allowable values must be in the range between 1 and 480 minutes |
 | status_agenda | Voting period status |
 | created_date | Indicates the date of registration of the agenda |
-| last_modified_date | audit |
-| status | audit |
+| last_modified_date | Audit |
+| status | Audit |
 
 
 

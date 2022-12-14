@@ -24,17 +24,43 @@ This is a project developed in the Java language with the objective of providing
 
 #### Create agenda
 
-This operation saves the data in the agenda table.
+This operation creates an agenda that will serve as a topic for voting. Basically, you'll need to enter a title, a description and the duration of the voting period.
 
-Below are the definitions of the agenda table.
+Here is an example of a request:
+
+```
+{
+    "title" : "World Cup",
+    "description" : "Which country do you think will win the world cup?",
+    "duration" : 5
+}
+```
+
+The process generates a response code that will be used to identify the agenda:
+
+```
+{
+    "code": "3072be22-b392-4f8d-8e1c-71a4a8a0ca83"
+}
+```
+
+The data will be saved in the agenda table. Below is its structure.
 
 ![tb_agenda](https://user-images.githubusercontent.com/1280690/207092702-b42608cd-40bd-4e22-bfc2-0e0a8e86c43c.png)
 
-The id, code, created_date, last_modified_date and status columns are filled in automatically.
+The table below describes which columns are changed during the process of registering an agenda.
 
-The duration column has a range of values between 1 and 480 minutes.
-
-The status_agenda column has the following value options:
+| Column | Function |
+| ------ | ------ |
+| id | audit |
+| code | Used to identify a agenda |
+| title | Agenda title |
+| description | Detailed description of the agenda |
+| duration | Voting duration. Allowable values must be in the range between 1 and 480 minutes |
+| status_agenda | Voting period status |
+| created_date | Indicates the date of registration of the agenda |
+| last_modified_date | audit |
+| status | audit |
 
 
 

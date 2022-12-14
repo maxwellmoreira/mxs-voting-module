@@ -16,12 +16,6 @@ This is a project developed in the Java language with the objective of providing
 | Vote Agenda | [POST]  /vote |
 | Count votes and define a winner | [GET]   /vote/vote-counting |
 
->This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
-
->The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
-
-![swagger](https://user-images.githubusercontent.com/1280690/207200385-aa7324c1-8c12-4a89-9160-31e74a39306f.png)
-
 #### Create agenda
 
 This operation creates an agenda that will serve as a topic for voting. Basically, you'll need to enter a title, a description and the duration of the voting period.
@@ -62,5 +56,9 @@ The table below describes which columns are changed during the process of regist
 | last_modified_date | Audit |
 | status | Audit |
 
+>This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
 
+>The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
+
+![swagger](https://user-images.githubusercontent.com/1280690/207200385-aa7324c1-8c12-4a89-9160-31e74a39306f.png)
 

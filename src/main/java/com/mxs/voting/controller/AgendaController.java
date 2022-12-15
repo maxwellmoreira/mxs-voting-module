@@ -30,9 +30,7 @@ import static com.mxs.voting.constant.UriConstant.AGENDA;
 @RequestMapping(value = AGENDA)
 @Tag(name = "Agenda Controller", description = "Controller responsible for operations related to the agenda")
 public class AgendaController {
-
     private static final Logger logger = LoggerFactory.getLogger(AgendaController.class);
-
     @Autowired
     private AgendaService agendaService;
 

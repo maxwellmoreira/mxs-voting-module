@@ -28,10 +28,9 @@ import static com.mxs.voting.constant.UriConstant.VOTING_OPTION;
 @RequestMapping(value = VOTING_OPTION)
 @Tag(name = "Voting Option Controller", description = "Controller responsible for operations related to voting options")
 public class VotingOptionController {
+    private static final Logger logger = LoggerFactory.getLogger(VotingOptionController.class);
     @Autowired
     private VotingOptionService votingOptionService;
-
-    private static final Logger logger = LoggerFactory.getLogger(VotingOptionController.class);
 
     @Operation(summary = "Create voting option")
     @ApiResponses(value = {

@@ -1,5 +1,7 @@
 package com.mxs.voting.service;
 
+import com.mxs.voting.exception.InternalErrorException;
+import com.mxs.voting.exception.NotFoundException;
 import com.mxs.voting.model.AgendaModel;
 import com.mxs.voting.repository.AgendaRepository;
 import com.mxs.voting.request.RegisterAgendaRequest;
@@ -19,31 +21,24 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static com.mxs.voting.constant.MessageConstant.AGENDA_NOT_FOUND;
+import static com.mxs.voting.constant.MessageConstant.ERROR_VOTING_FLOW;
 import static java.lang.Thread.sleep;
 
 @Service
 public class AgendaService {
     private static final Logger logger = LoggerFactory.getLogger(AgendaService.class);
-    private static final long ZERO = 0;
-    private static final long DEFAULT_DURATION = 1;
     private static final long SIXTY_THOUSAND = 60000;
 
     @Autowired
     private AgendaRepository agendaRepository;
 
     public RegisterAgendaResponse registerAgenda(RegisterAgendaRequest registerAgendaRequest) {
-        var duration = registerAgendaRequest.getDuration();
-
-        if (registerAgendaRequest.getDuration() <= ZERO) {
-            duration = DEFAULT_DURATION;
-            logger.info("AgendaController.registerAgenda -> default duration: {}", DEFAULT_DURATION);
-        }
-
         AgendaModel agendaModel =
                 AgendaModel.builder()
                         .title(registerAgendaRequest.getTitle())
                         .description(registerAgendaRequest.getDescription())
-                        .duration(duration)
+                        .duration(registerAgendaRequest.getDuration())
                         .agendaStatusType(AgendaStatusType.CREATED)
                         .build();
 
@@ -54,15 +49,14 @@ public class AgendaService {
     }
 
     public StartAgendaResponse startAgenda(StartAgendaRequest startAgendaRequest) {
-        Optional<AgendaModel> agendaModelOptional =
-                agendaRepository.findByCodeAndStatusAgendaEquals(startAgendaRequest.getAgendaCode(), AgendaStatusType.CREATED.getCode());
+        Optional<AgendaModel> agendaModelOptional = agendaRepository.findByCodeAndStatusAgendaEquals(startAgendaRequest.getAgendaCode(), AgendaStatusType.CREATED.getCode());
         logger.info("AgendaController.startAgenda -> agendaModelOptional: {}", agendaModelOptional);
         return agendaModelOptional.map(
                 agenda -> {
                     agenda.setAgendaStatusType(AgendaStatusType.VOTING);
                     agendaRepository.save(agenda);
                     return startTimer(agenda);
-                }).get();
+                }).orElseThrow(() -> new NotFoundException(AGENDA_NOT_FOUND));
     }
 
     private StartAgendaResponse startTimer(AgendaModel agendaModel) {
@@ -77,9 +71,9 @@ public class AgendaService {
                 try {
                     sleep(milliseconds);
                 } catch (InterruptedException e) {
-                    logger.error("AgendaController.startTimer -> An error occurred during the voting process. " +
+                    logger.error("AgendaController.startTimer -> An error occurred during the voting period. " +
                             "Message: {}, Cause: {}", e.getMessage(), e.getCause());
-                    throw new RuntimeException(e);
+                    throw new InternalErrorException(ERROR_VOTING_FLOW);
                 }
 
                 Instant end = Instant.now();
@@ -102,7 +96,9 @@ public class AgendaService {
             future.isDone();
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            logger.error("AgendaController.startTimer -> An error occurred during the voting period. " +
+                    "Message: {}, Cause: {}", e.getMessage(), e.getCause());
+            throw new InternalErrorException(ERROR_VOTING_FLOW);
         }
     }
 }

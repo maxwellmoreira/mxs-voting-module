@@ -2,6 +2,7 @@ package com.mxs.voting.service;
 
 import com.mxs.voting.dto.VoteCountingDto;
 import com.mxs.voting.dto.VoteDto;
+import com.mxs.voting.exception.NotFoundException;
 import com.mxs.voting.model.AgendaModel;
 import com.mxs.voting.model.VotingOptionModel;
 import com.mxs.voting.repository.AgendaRepository;
@@ -23,11 +24,16 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.mxs.voting.constant.MessageConstant.AGENDA_NOT_FOUND;
+import static com.mxs.voting.constant.MessageConstant.VOTING_OPTION_NOT_FOUND;
+import static com.mxs.voting.constant.MessageConstant.WINNING_VOTING_OPTION_NOT_FOUND;
 import static com.mxs.voting.constant.QueueConstant.VOTE;
 
 @Service
 public class VoteService {
     private static final Logger logger = LoggerFactory.getLogger(VoteService.class);
+    private static final int ONE = 1;
+    private static final int HUNDRED = 100;
     @Autowired
     private AgendaRepository agendaRepository;
     @Autowired
@@ -74,23 +80,27 @@ public class VoteService {
                         .filter(voteCountingDto -> voteCountingDto.getHasWon().equals(Boolean.TRUE))
                         .map(VoteCountingDto::getCode)
                         .findFirst()
-                        .orElse(null))
+                        .orElseThrow(() -> new NotFoundException(WINNING_VOTING_OPTION_NOT_FOUND)))
                 .winner(voteCountingDtoList.stream()
                         .filter(voteCountingDto -> voteCountingDto.getHasWon().equals(Boolean.TRUE))
                         .map(VoteCountingDto::getDescription)
                         .findFirst()
-                        .orElse(null))
+                        .orElseThrow(() -> new NotFoundException(WINNING_VOTING_OPTION_NOT_FOUND)))
                 .voteCountingDtoList(voteCountingDtoList)
                 .build();
     }
 
     private AgendaModel getAgendaByCode(VoteCountingRequest voteCountingRequest) {
-        return agendaRepository.findByCodeAndStatusAgendaEquals(
-                voteCountingRequest.getAgendaCode(), AgendaStatusType.FINISHED.getCode()).get();
+        return agendaRepository.findByCodeAndStatusAgendaEquals(voteCountingRequest.getAgendaCode(), AgendaStatusType.FINISHED.getCode())
+                .orElseThrow(() -> new NotFoundException(AGENDA_NOT_FOUND));
     }
 
     private List<VotingOptionModel> getVotingOptionByAgenda(AgendaModel agendaModel) {
-        return votingOptionRepository.findByAgendaEquals(agendaModel.getCode(), StatusType.ACTIVE.getCode());
+        List<VotingOptionModel> votingOptionModelList = votingOptionRepository.findByAgendaEquals(agendaModel.getCode(), StatusType.ACTIVE.getCode());
+        if (votingOptionModelList.isEmpty()) {
+            throw new NotFoundException(VOTING_OPTION_NOT_FOUND);
+        }
+        return votingOptionModelList;
     }
 
     private List<VoteCountingDto> getVoteCountingDtoList(AgendaModel agendaModel, List<VotingOptionModel> votingOptionModelList) {
@@ -114,16 +124,16 @@ public class VoteService {
     }
 
     private void updateVoteCountingDtoList(List<VoteCountingDto> voteCountingDtoList, int totalAmountVotes) {
-        AtomicInteger atomicInteger = new AtomicInteger(1);
+        AtomicInteger atomicInteger = new AtomicInteger(ONE);
         voteCountingDtoList.forEach(
                 voteCountingDto -> {
                     voteCountingDto.setPosition(atomicInteger.getAndIncrement());
-                    if (voteCountingDto.getPosition() == 1) {
+                    if (voteCountingDto.getPosition() == ONE) {
                         voteCountingDto.setHasWon(Boolean.TRUE);
                     } else {
                         voteCountingDto.setHasWon(Boolean.FALSE);
                     }
-                    var votesPercentage = (voteCountingDto.getAmountVotes() * 100) / totalAmountVotes;
+                    var votesPercentage = (voteCountingDto.getAmountVotes() * HUNDRED) / totalAmountVotes;
                     voteCountingDto.setVotesPercentage(votesPercentage);
         });
     }
@@ -133,7 +143,7 @@ public class VoteService {
             VotingOptionModel votingOptionModel = votingOptionModelList.stream()
                     .filter(votingOption -> votingOption.getCode().equalsIgnoreCase(voteCountingDto.getCode()))
                     .findFirst()
-                    .orElse(null);
+                    .orElseThrow(() -> new NotFoundException(VOTING_OPTION_NOT_FOUND));
             votingOptionModel.setAmountVotes(voteCountingDto.getAmountVotes());
             votingOptionModel.setPercentageVotes(voteCountingDto.getVotesPercentage());
             votingOptionModel.setPosition(voteCountingDto.getPosition());
@@ -143,8 +153,11 @@ public class VoteService {
     }
 
     private void updateAgenda(AgendaModel agendaModel, List<VotingOptionModel> votingOptionModelList, int totalAmountVotes) {
-        VotingOptionModel votingOptionModel = votingOptionModelList.stream()
-                .filter(votingOption -> votingOption.getHasWon().equals(Boolean.TRUE)).findFirst().orElseThrow(IllegalArgumentException::new);
+        VotingOptionModel votingOptionModel =
+                votingOptionModelList.stream()
+                        .filter(votingOption -> votingOption.getHasWon().equals(Boolean.TRUE))
+                        .findFirst()
+                        .orElseThrow(() -> new NotFoundException(WINNING_VOTING_OPTION_NOT_FOUND));
         agendaModel.setTotalAmountVotes(totalAmountVotes);
         agendaModel.setWinner(votingOptionModel.getCode());
         agendaRepository.save(agendaModel);

@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -52,8 +49,8 @@ public class VoteController {
             @ApiResponse(responseCode = "200", description = "Vote count and agenda result returned successfully",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = VoteResponse.class))})})
-    @GetMapping("/vote-counting")
-    public ResponseEntity<VoteCountingResponse> countVotes(@Valid VoteCountingRequest voteCountingRequest) {
+    @PutMapping("/vote-counting")
+    public ResponseEntity<VoteCountingResponse> countVotes(@Valid @RequestBody VoteCountingRequest voteCountingRequest) {
         logger.info("VoteController.countVotes -> voteCountingRequest: {}", voteCountingRequest);
         VoteCountingResponse voteCountingResponse = voteService.countVotes(voteCountingRequest);
         logger.info("VoteController.countVotes -> voteCountingResponse: {}", voteCountingResponse);

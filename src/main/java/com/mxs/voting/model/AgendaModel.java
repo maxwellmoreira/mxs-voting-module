@@ -28,7 +28,7 @@ public class AgendaModel extends AuditModel {
     private LocalDateTime ended;
     @Column(name = "total_amount_votes")
     private int totalAmountVotes;
-    @Column(name = "winner")
+    @Column(name = "winner", length = 36)
     private String winner;
     @Column(name = "status_agenda", nullable = false, length = 1)
     private String statusAgenda;

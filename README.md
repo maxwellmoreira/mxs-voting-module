@@ -14,7 +14,7 @@ This is a project developed in the Java language with the objective of providing
 | Create voting options | [POST]  /voting-option |
 | Start voting agenda | [PUT]   /agenda |
 | Vote Agenda | [POST]  /vote |
-| Count votes and define a winner | [GET]   /vote/vote-counting |
+| Count votes and define a winner | [PUT]   /vote/vote-counting |
 
 #### Create agenda
 

@@ -63,6 +63,29 @@ The status_agenda column controls the voting flow. Its possible values are:
 - FINISHED("F") - The voting period for an agenda has ended.
 - INTERRUPTED("I") - A agenda that was started is interrupted.
 
+#### Create voting options
+
+This operation creates a voting option for an agenda.
+
+To save the record, you will need to inform the agenda code and a description for the voting option.
+
+Here is an example of a request:
+
+```
+{
+    "description" : "Croatia",
+    "agendaCode" : "3072be22-b392-4f8d-8e1c-71a4a8a0ca83"
+}
+```
+
+This registration will generate a code that will be necessary to identify the record.
+
+```
+{
+    "code": "1fc09262-b1f2-4550-a4b6-12386bd8f6d6"
+}
+```
+
 >This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
 
 >The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs

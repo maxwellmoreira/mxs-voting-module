@@ -86,6 +86,16 @@ This registration will generate a code that will be necessary to identify the re
 }
 ```
 
+If an agenda is informed that does not exist in the database, the following exception will be thrown:
+
+```
+{
+    "type": "BUSINESS",
+    "message": "Agenda not found",
+    "timestamp": "2022-12-15 00:14:15"
+}
+```
+
 >This project supports the springdoc-openapi library used for automated documentation generation in Spring Boot projects. So Swagger-ui and OpenAPI 3 will be implemented in the project.
 
 >The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs

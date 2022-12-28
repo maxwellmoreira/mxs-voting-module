@@ -8,13 +8,15 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuditModel {
+public class AuditModel implements Serializable {
+    private static final long serialVersionUID = -1262070442705437088L;
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")

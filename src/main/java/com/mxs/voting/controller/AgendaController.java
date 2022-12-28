@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,7 @@ public class AgendaController {
             @ApiResponse(responseCode = "201", description = "Agenda registered successfully",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = RegisterAgendaResponse.class))})})
+    @Cacheable(value = "agenda", key = "#userId", unless = "#result.followers < 12000")
     @PostMapping
     public ResponseEntity<RegisterAgendaResponse> registerAgenda(@Valid @RequestBody RegisterAgendaRequest registerAgendaRequest) {
         logger.info("AgendaController.registerAgenda -> registerAgendaRequest: {}", registerAgendaRequest);

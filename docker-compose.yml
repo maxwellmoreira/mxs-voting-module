@@ -1,6 +1,30 @@
 version: "3.7"
 
 services:
+  redis:
+    image: redis:6.2.5
+    command: redis-server --requirepass mxs
+    volumes:
+      - ./redis:/var/lib/redis
+      - ./redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    links:
+      - redis-commander
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: redis
+      REDIS_HOST: redis
+      REDIS_PORT: redis:6379
+      REDIS_PASSWORD: mxs
+      HTTP_USER: root
+      HTTP_PASSWORD: root
+    ports:
+      - 8081:8081
+
   pgsql:
     image: postgres:12.2
     container_name: PostgreSQL
@@ -47,5 +71,7 @@ networks:
     driver: bridge
 
 volumes:
+  redis:
+  redis-config:
   pgsql-data:
   pgadmin-data:
